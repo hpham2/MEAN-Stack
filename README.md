@@ -2,6 +2,13 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.4.
 
+## Do it for easy setup
+1. Clone to your desktop
+2. run "npm install"
+3. run "npm install -g @angular/cli"
+4. run "ng serve" for first terminal
+5. run "npm run start:server" for second terminal
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
