@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
   private postsSub: Subscription;
+  isLoading: boolean = true;
 
   constructor(public postsService: PostsService) { }
 
@@ -19,6 +20,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
     this.postsSub = this.postsService.getPostUpdatedListener().subscribe(posts => {
       this.posts = posts;
+      this.isLoading = false;
     })
 
   }

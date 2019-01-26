@@ -50,7 +50,7 @@ export class PostsService {
         post.id = res.postId,
         this.posts.push(post);
         this.postUpdated.next([...this.posts]);
-        this.router.navigate(['/'])
+        this.router.navigate(['/']);
       })
   }
 
@@ -69,6 +69,7 @@ export class PostsService {
         updatedPosts[oldIndex] = post;
         this.posts = updatedPosts;
         this.postUpdated.next([...this.posts]);
+        this.router.navigate(['/']);
       });
   }
 
