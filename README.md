@@ -8,6 +8,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 3. run "npm install -g @angular/cli"
 4. run "ng serve" for first terminal
 5. run "npm run start:server" for second terminal
+6. Open browser "localhost:4200" to see result
 
 ## Development server
 
