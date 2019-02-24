@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -20,6 +21,7 @@ mongoose
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use("/images", express.static(path.join("backend/images"))); //any request with "/images" will be allowed, because normally frontend cannot access to folder of backend w.o allowance.
 
 /** This is call as middleware */
 app.use((req, res, next) => {

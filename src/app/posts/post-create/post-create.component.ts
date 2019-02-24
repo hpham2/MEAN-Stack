@@ -15,12 +15,14 @@ export class PostCreateComponent implements OnInit {
   enteredTitle: string = "";
   isLoading: boolean = false;
   form: FormGroup;
+  imagePreview;
   private mode = 'create';
   private postId: string;
   post: Post = {
     id: null,
     title: "",
-    content: ""
+    content: "",
+    imagePath: null
   };
 
   constructor(public postsService: PostsService, public route: ActivatedRoute) { }
@@ -31,6 +33,9 @@ export class PostCreateComponent implements OnInit {
         validators: [Validators.required, Validators.minLength(3)]
       }),
       content: new FormControl(null, {
+        validators: [Validators.required]
+      }),
+      image: new FormControl(null, {
         validators: [Validators.required]
       })
     });
@@ -43,7 +48,8 @@ export class PostCreateComponent implements OnInit {
         this.post = this.postsService.getPost(this.postId);
         this.form.setValue({
           title: this.post.title,
-          content: this.post.content
+          content: this.post.content,
+          image: this.post.imagePath
         });
       } else {
         this.isLoading = false;
@@ -53,17 +59,37 @@ export class PostCreateComponent implements OnInit {
     });
   }
 
+  onImagePicked(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({image: file}); //patch accesses 1 control, set accesses all.
+    this.form.get('image').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    }
+    reader.readAsDataURL(file);
+  }
+
   onSavePost() {
     if(this.form.invalid) {
-      console.log(this.form)
+      // console.log(this.form)
       return;
     }
     this.isLoading = true;
     if(this.mode === 'create') {
-      this.postsService.addPost(this.form.value.title, this.form.value.content);
+      this.postsService.addPost(
+        this.form.value.title, 
+        this.form.value.content, 
+        this.form.value.image
+      );
     } else {
       console.log(this.postId, this.form.value.title, this.form.value.content)
-      this.postsService.updatePost(this.postId, this.form.value.title, this.form.value.content);
+      this.postsService.updatePost(
+        this.postId, 
+        this.form.value.title, 
+        this.form.value.content,
+        this.form.value.image  
+      );
     }
     this.form.reset();
   }
