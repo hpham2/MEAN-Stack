@@ -1,16 +1,22 @@
 <mat-card>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <form (submit)="onSavePost(postForm)" #postForm="ngForm">
+  <form [formGroup]="form" (submit)="onSavePost()">
     <mat-form-field>
-      <input matInput type="text" name = "title" placeholder="Title"
-        [ngModel]="post.title" required minlength="3" #title="ngModel">
-      <mat-error *ngIf="title.hasError('required')">Please enter title.</mat-error>
-      <mat-error *ngIf="title.hasError('minlength')">Title must be longer than 3 characters.</mat-error>
+      <input matInput type="text" placeholder="Title"
+        formControlName="title">
+      <mat-error *ngIf="form.get('title').invalid">Please enter title.</mat-error>
+      <!-- <mat-error *ngIf="title.hasError('minlength')">Title must be longer than 3 characters.</mat-error> -->
     </mat-form-field>
+
+    <div>
+      <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
+      <input type="file" #filePicker>
+    </div>
+
     <mat-form-field>
-      <textarea matInput placeholder="Content" row="4" name="content"
-        [ngModel]="post.content" required #content="ngModel"></textarea>
-      <mat-error *ngIf="content.hasError('required')">Please enter content.</mat-error>
+      <textarea matInput placeholder="Content" row="4" 
+        formControlName="content"></textarea>
+      <mat-error *ngIf="form.get('content').invalid">Please enter content.</mat-error>
     </mat-form-field>
     <button mat-raised-button color="primary" type="submit">Save post</button>
   </form>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Post } from '../post.model';
-import { NgForm } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostsService } from '../posts.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { post } from 'selenium-webdriver/http';
@@ -13,6 +13,8 @@ import { post } from 'selenium-webdriver/http';
 export class PostCreateComponent implements OnInit {
   enteredContent: string = "";
   enteredTitle: string = "";
+  isLoading: boolean = false;
+  form: FormGroup;
   private mode = 'create';
   private postId: string;
   post: Post = {
@@ -20,17 +22,29 @@ export class PostCreateComponent implements OnInit {
     title: "",
     content: ""
   };
-  isLoading: boolean = false;
 
   constructor(public postsService: PostsService, public route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.form = new FormGroup({
+      title: new FormControl(null, {
+        validators: [Validators.required, Validators.minLength(3)]
+      }),
+      content: new FormControl(null, {
+        validators: [Validators.required]
+      })
+    });
+
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if(paramMap.has('postId')) {
         this.isLoading = false;
         this.mode = 'edit';
         this.postId = paramMap.get('postId');
         this.post = this.postsService.getPost(this.postId);
+        this.form.setValue({
+          title: this.post.title,
+          content: this.post.content
+        });
       } else {
         this.isLoading = false;
         this.mode = "create";
@@ -39,18 +53,19 @@ export class PostCreateComponent implements OnInit {
     });
   }
 
-  onSavePost(form: NgForm) {
-    if(form.invalid) {
+  onSavePost() {
+    if(this.form.invalid) {
+      console.log(this.form)
       return;
     }
     this.isLoading = true;
     if(this.mode === 'create') {
-      this.postsService.addPost(form.value.title, form.value.content);
+      this.postsService.addPost(this.form.value.title, this.form.value.content);
     } else {
-      console.log(this.postId, form.value.title, form.value.content)
-      this.postsService.updatePost(this.postId, form.value.title, form.value.content);
+      console.log(this.postId, this.form.value.title, this.form.value.content)
+      this.postsService.updatePost(this.postId, this.form.value.title, this.form.value.content);
     }
-    form.reset();
+    this.form.reset();
   }
 
 }
