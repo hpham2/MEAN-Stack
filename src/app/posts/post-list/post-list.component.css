@@ -6,6 +6,11 @@ mat-spinner {
   margin: 0 auto;
 }
 
+.title {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 110%;
+}
+
 .post-image {
   width: 100%;
 }
@@ -17,4 +22,5 @@ mat-spinner {
 
 mat-paginator {
   margin-top: 1rem;
+  background-color: rgb(27, 250, 250);
 }

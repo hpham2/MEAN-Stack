@@ -1,3 +1,7 @@
+#main-container {
+  background-color: azure;
+}
+
 main {
   margin-top: 1rem;
   width: 80%;
