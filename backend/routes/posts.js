@@ -36,14 +36,29 @@ router.post('', multer({storage: storage}).single('image') ,(req, res, next) => 
 
 /**Just use for get req */
 router.get('',(req, res, next) => {
-  // console.log(req)
-  Post.find().then(documents => {
-    // console.log(documents)
-    return res.status(200).json({
-      message: 'Posts fetched successfully',
-      posts: documents
+  //a + sign is used to insist it is a number, otherwise postQuery.limit does not work.
+  const pageSize = +req.query.pagesize;
+  const currentPage = +req.query.page;
+  const postQuery = Post.find();
+  let fetchedPosts;
+
+  if(pageSize && currentPage) {
+    postQuery
+      .skip(pageSize * (currentPage - 1))
+      .limit(pageSize);
+  }
+  postQuery
+    .then(documents => {
+      fetchedPosts = documents  ;
+      return Post.count();
+    })
+    .then(count => {
+      res.status(200).json({
+        message: 'Posts fetched successfully',
+        posts: fetchedPosts,
+        maxPosts: count
+      });
     });
-  });
 })
 
 /**update post */

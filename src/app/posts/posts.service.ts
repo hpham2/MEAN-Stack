@@ -9,27 +9,35 @@ import { Router } from '@angular/router';
 @Injectable()
 export class PostsService {
   private posts: Post[] = [];
-  private postUpdated = new Subject<Post[]>();
+  private postUpdated = new Subject<{posts: Post[], postCount: number}>();
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  getPosts() {
+  getPosts(postsPerPage: number, currentPage: number) {
+    const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`; // ``sign allows to add values to a normal string.
+
     /** pipe is to chain operators before subscribe */
-    this.http.get<{ message: string, posts: any }>('http://localhost:3000/api/posts')
+    this.http.get<{ message: string, posts: any, maxPosts: number }>('http://localhost:3000/api/posts' + queryParams)
       .pipe(map((postData) => {
-        return postData.posts.map(post => {
-          return {
-            title: post.title,
-            content: post.content,
-            id: post._id,
-            imagePath: post.imagePath
-          };
-        });
+        return {
+          posts: postData.posts.map(post => {
+            return {
+              title: post.title,
+              content: post.content,
+              id: post._id,
+              imagePath: post.imagePath
+            };
+          }),
+          maxPosts: postData.maxPosts
+        }
       }))
-      .subscribe(tranformedPost => {
-        this.posts = tranformedPost;
+      .subscribe(tranformedPostData => {
+        this.posts = tranformedPostData.posts;
         /**...this.post just create the copy of it */
-        this.postUpdated.next([...this.posts])
+        this.postUpdated.next({
+          posts: [...this.posts], 
+          postCount: tranformedPostData.maxPosts
+        })
       });
 
     /** [...a] copy of a */
@@ -48,14 +56,6 @@ export class PostsService {
 
     this.http.post<{ message: string, post: Post }>('http://localhost:3000/api/posts', postData)
       .subscribe((res) => {
-        const post: Post = {
-          id: res.post.id,
-          title: title,
-          content: content,
-          imagePath: res.post.imagePath
-        };
-        this.posts.push(post);
-        this.postUpdated.next([...this.posts]);
         this.router.navigate(['/']);
       })
   }
@@ -88,27 +88,11 @@ export class PostsService {
     this.http
       .put("http://localhost:3000/api/posts/" + id, postData)
       .subscribe(response => {
-        const updatedPosts = [...this.posts];
-        const oldIndex = updatedPosts.findIndex(p => p.id === id);
-        const post: Post = {
-          id: id,
-          title: title,
-          content: content,
-          imagePath: ""
-        }
-        updatedPosts[oldIndex] = post;
-        this.posts = updatedPosts;
-        this.postUpdated.next([...this.posts]);
         this.router.navigate(['/']);
       });
   }
 
   deletePost(postId: string) {
-    this.http.delete("http://localhost:3000/api/posts/" + postId)
-      .subscribe(() => {
-        const updatedPosts = this.posts.filter(post => post.id !== postId);
-        this.posts = updatedPosts;
-        this.postUpdated.next([...this.posts]);
-      });
+    return this.http.delete("http://localhost:3000/api/posts/" + postId);
   }
 }
