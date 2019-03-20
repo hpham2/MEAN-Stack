@@ -20,6 +20,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     AppRoutingModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTabsModule
   ],
   providers: [
     PostsService

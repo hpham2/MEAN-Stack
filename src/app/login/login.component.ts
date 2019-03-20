@@ -8,12 +8,13 @@ import { UserService } from './user.service'
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  form: FormGroup;
-
+  signupForm: FormGroup;
+  loginForm: FormGroup;
+  
   constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.form = new FormGroup({
+    this.signupForm = new FormGroup({
       userName: new FormControl(null, {
         validators: [Validators.required, Validators.minLength(3)]
       }),
@@ -24,20 +25,36 @@ export class LoginComponent implements OnInit {
         validators: [Validators.required]
       }),
     });
+
+    this.loginForm = new FormGroup({
+      userName: new FormControl(null, {
+        validators: [Validators.required, Validators.minLength(3)]
+      }),
+      password: new FormControl(null, {
+        validators: [Validators.required]
+      })
+    })
   }
 
-  onSaveUser() {
-    if(this.form.invalid) {
+  onSignupUser() {
+    if(this.signupForm.invalid) {
       return;
     }
 
-    if (this.form.value.password !== this.form.value.confirmPassword) {
-      this.form.controls.confirmPassword.setErrors({'incorrect': true});
+    if (this.signupForm.value.password !== this.signupForm.value.confirmPassword) {
+      this.signupForm.controls.confirmPassword.setErrors({'incorrect': true});
       return
     }
 
-    console.log(this.form.value)
-    this.userService.signupUser(this.form.value.userName, this.form.value.password)
+    this.userService.signupUser(this.signupForm.value.userName, this.signupForm.value.password)
   }
 
+  onLoginUser() {
+    if(this.loginForm.invalid) {
+      return;
+    }
+
+    console.log(this.loginForm.value);
+    this.userService.loginUser(this.loginForm.value.userName, this.loginForm.value.password)
+  }
 }
