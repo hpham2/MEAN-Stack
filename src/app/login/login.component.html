@@ -1,0 +1,22 @@
+<mat-card>
+    <form [formGroup]="form" (submit)="onSaveUser()">
+      <mat-form-field>
+        <input matInput type="text" placeholder="User name"
+          formControlName="userName">
+        <mat-error *ngIf="form.get('userName').invalid">Please enter title.</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field>
+        <input type="password" matInput placeholder="Password" row="4" 
+          formControlName="password">
+        <mat-error *ngIf="form.get('password').invalid">Please enter content.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+          <input type="password" matInput placeholder="Confirm Password" row="4" 
+            formControlName="confirmPassword">
+          <mat-error *ngIf="form.get('confirmPassword').invalid">Please enter content.</mat-error>
+        </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">Save post</button>
+    </form>
+  </mat-card>
