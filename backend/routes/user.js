@@ -23,17 +23,21 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
-    const user = new User({
-        userName: req.body.userName,
-        password: req.body.password
-    })
 
     User.find().then(documents => {
         // console.log(documents)
-        return res.status(200).json({
-            message: 'Posts fetched successfully',
-            posts: documents
-        });
+
+        let result = documents.filter(user => user.userName === req.body.userName)
+        if (result.length == 0) {
+            return res.status(200).json({
+                message: "You are not signed up!"
+            });
+        } else {
+            return res.status(200).json({
+                message: "You are logged in"
+            });
+        } 
+        
     });
 });
 

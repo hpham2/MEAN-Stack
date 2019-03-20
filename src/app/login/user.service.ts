@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { MatSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
+  constructor(private http: HttpClient, private snackBar: MatSnackBar, private router: Router) { }
 
   signupUser(userName: string, password: string) {
     const userData = {
@@ -17,7 +18,9 @@ export class UserService {
     console.log(userName)
     this.http.post('http://localhost:3000/api/user/signup', userData)
       .subscribe((res) => {
-        let snackBarRef = this.snackBar.open("Your account is created", "Please log in");
+        let snackBarRef = this.snackBar.open("Your account is created", "Please log in", {
+          duration: 2000,
+        });
       })
   }
 
@@ -26,11 +29,13 @@ export class UserService {
       userName: userName,
       password: password
     }
-    
+
     this.http.post('http://localhost:3000/api/user/login', userData)
       .subscribe((res) => {
-        console.log(res)
-        let snackBarRef = this.snackBar.open("You are logged in");
+        let snackBarRef = this.snackBar.open(res['message'], "", {
+          duration: 2000,
+        });
+        if(res['message'] == "You are logged in") this.router.navigate(['/']);
       })
   }
 }
