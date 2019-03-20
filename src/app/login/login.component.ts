@@ -27,10 +27,15 @@ export class LoginComponent implements OnInit {
   }
 
   onSaveUser() {
-    if(this.form.invalid || this.form.value.password !== this.form.value.confirmPassword) {
-      // console.log(this.form)
+    if(this.form.invalid) {
       return;
     }
+
+    if (this.form.value.password !== this.form.value.confirmPassword) {
+      this.form.controls.confirmPassword.setErrors({'incorrect': true});
+      return
+    }
+
     console.log(this.form.value)
     this.userService.signupUser(this.form.value.userName, this.form.value.password)
   }
