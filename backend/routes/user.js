@@ -28,18 +28,13 @@ router.post('/login', (req, res, next) => {
         password: req.body.password
     })
 
-    console.log(user)
-
-    // user.save().then(createdUser => {
-    //     console.log(createdUser)
-    //     res.status(201).json({
-    //         message: "user is created successfully.",
-    //         user: {
-    //             ...createdUser, //all properties of createdPost
-    //             id: createdUser._id,
-    //         }
-    //     });
-    // })
+    User.find().then(documents => {
+        // console.log(documents)
+        return res.status(200).json({
+            message: 'Posts fetched successfully',
+            posts: documents
+        });
+    });
 });
 
 module.exports = router;

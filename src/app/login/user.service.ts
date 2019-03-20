@@ -26,10 +26,11 @@ export class UserService {
       userName: userName,
       password: password
     }
-    console.log(userName)
+    
     this.http.post('http://localhost:3000/api/user/login', userData)
       .subscribe((res) => {
-        let snackBarRef = this.snackBar.open("Your account is created", "Please log in");
+        console.log(res)
+        let snackBarRef = this.snackBar.open("You are logged in");
       })
   }
 }
