@@ -1,0 +1,7 @@
+mat-form-field, textarea {
+    width: 100%
+}
+  
+#confirmField {
+    margin-bottom: 10px;
+}

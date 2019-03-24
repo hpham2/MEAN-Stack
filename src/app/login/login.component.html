@@ -1,0 +1,42 @@
+<mat-tab-group>
+  <mat-tab label="Sign up">
+    <mat-card>
+      <form [formGroup]="signupForm" (submit)="onSignupUser()">
+        <mat-form-field>
+          <input matInput type="text" placeholder="User name" formControlName="userName">
+          <mat-error *ngIf="signupForm.get('userName').invalid">Please enter long username.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input type="password" matInput placeholder="Password" row="4" formControlName="password">
+          <mat-error *ngIf="signupForm.get('password').invalid">Please enter password.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field id="confirmField">
+          <input type="password" matInput placeholder="Confirm Password" row="4" formControlName="confirmPassword">
+          <mat-error *ngIf="signupForm.get('confirmPassword').invalid">Your password and confirmation do not match.
+          </mat-error>
+        </mat-form-field>
+
+        <button id="submitButton" mat-raised-button color="primary" type="submit">Sign up</button>
+      </form>
+    </mat-card>
+  </mat-tab>
+  <mat-tab label="Log in">
+    <mat-card>
+      <form [formGroup]="loginForm" (submit)="onLoginUser()">
+        <mat-form-field>
+          <input matInput type="text" placeholder="User name" formControlName="userName">
+          <mat-error *ngIf="loginForm.get('userName').invalid">Please enter long username.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field id="confirmField">
+          <input type="password" matInput placeholder="Password" row="4" formControlName="password">
+          <mat-error *ngIf="loginForm.get('password').invalid">Please enter password.</mat-error>
+        </mat-form-field>
+
+        <button id="submitButton" mat-raised-button color="primary" type="submit">Log in</button>
+      </form>
+    </mat-card>
+  </mat-tab>
+</mat-tab-group>
