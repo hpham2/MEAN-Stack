@@ -53,8 +53,6 @@ export class LoginComponent implements OnInit {
     if(this.loginForm.invalid) {
       return;
     }
-
-    console.log(this.loginForm.value);
     this.userService.loginUser(this.loginForm.value.userName, this.loginForm.value.password)
   }
 }

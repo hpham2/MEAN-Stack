@@ -15,12 +15,21 @@ export class UserService {
       userName: userName,
       password: password
     }
-    console.log(userName)
+
     this.http.post('http://localhost:3000/api/user/signup', userData)
       .subscribe((res) => {
-        let snackBarRef = this.snackBar.open("Your account is created", "Please log in", {
-          duration: 2000,
-        });
+        console.log(res)
+        if(res['message'] === 'This email is already used!') {
+          let snackBarRef = this.snackBar.open(res['message'], "Please sign up again", {
+            duration: 5000,
+          });
+        } else {
+
+          let snackBarRef = this.snackBar.open(res['message'], "Please log in", {
+            duration: 5000,
+          });
+        }
+        
       })
   }
 
@@ -33,9 +42,9 @@ export class UserService {
     this.http.post('http://localhost:3000/api/user/login', userData)
       .subscribe((res) => {
         let snackBarRef = this.snackBar.open(res['message'], "", {
-          duration: 2000,
+          duration: 5000,
         });
-        if(res['message'] == "You are logged in") this.router.navigate(['/']);
+        if(res['message'] === "You are logged in") this.router.navigate(['/']);
       })
   }
 }

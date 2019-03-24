@@ -72,7 +72,6 @@ export class PostCreateComponent implements OnInit {
 
   onSavePost() {
     if(this.form.invalid) {
-      // console.log(this.form)
       return;
     }
     this.isLoading = true;
@@ -83,7 +82,6 @@ export class PostCreateComponent implements OnInit {
         this.form.value.image
       );
     } else {
-      console.log(this.postId, this.form.value.title, this.form.value.content)
       this.postsService.updatePost(
         this.postId, 
         this.form.value.title, 
