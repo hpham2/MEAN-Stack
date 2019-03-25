@@ -15,7 +15,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
  2. Set up token, with library JWT, after authentication.
  3. Allow create, edit, delete, only if the header contains validated token.
  4. Appropriate error handling.
-
+ 5. Adding guard for route, e.g. user cannot go to create post by entering URL, without authentication.
+ 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
