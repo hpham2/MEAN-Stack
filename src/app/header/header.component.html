@@ -2,10 +2,13 @@
   <span><a routerLink="/">Hai Pham's Instagram</a></span>
   <span class="spacer"></span>
   <ul>
-    <li>
+    <li *ngIf="isAuthenticated">
       <a mat-button routerLink="/create" routerLinkActive="mat-accent">New Post</a>
     </li>
-    <li>
+    <li *ngIf="isAuthenticated">
+      <a mat-button routerLinkActive="mat-accent" (click)="logout()">Log out</a>
+    </li>
+    <li *ngIf="!isAuthenticated">
       <a mat-button routerLink="/signup" routerLinkActive="mat-accent">Sign Up</a>
     </li>
   </ul>
