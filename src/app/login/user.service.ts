@@ -2,13 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  private authenticationStatus = new Subject<boolean>();
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar, private router: Router) { }
+
+  getAuthenticationStatus() {
+    return this.authenticationStatus.asObservable();
+  }
 
   signupUser(userName: string, password: string) {
     const userData = {
@@ -44,7 +50,10 @@ export class UserService {
         let snackBarRef = this.snackBar.open(res['message'], "", {
           duration: 5000,
         });
-        if(res['message'] === "You are logged in") this.router.navigate(['/']);
+        if(res['message'] === "You are logged in") {
+          this.router.navigate(['/']);
+          this.authenticationStatus.next(true);
+        }
       })
   }
 }

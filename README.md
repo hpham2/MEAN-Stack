@@ -10,6 +10,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 5. run "npm run start:server" for second terminal
 6. Open browser "localhost:4200" to see result
 
+## Plan to do:
+ 1. Hash password.
+ 2. Set up token, with library JWT, after authentication.
+ 3. Allow create, edit, delete, only if the header contains validated token.
+ 4. Appropriate error handling.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
